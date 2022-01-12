@@ -29,7 +29,6 @@ Imports:
     S4Vectors,
     stringr,
     SummarizedExperiment,
-    tidyr,
     utils,
     VariantAnnotation
 Suggests: 
