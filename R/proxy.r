@@ -25,7 +25,8 @@ get_ld_proxies <- function(rsid, bfile, searchspace=NULL, tag_kb=5000, tag_nsnp=
 	{
 		stopifnot(is.character(searchspace))
 
-		utils::write.table(unique(c(rsid, searchspace)), file=searchspacename, row=F, col=F, qu=F)
+		utils::write.table(unique(c(rsid, searchspace)), file=searchspacename, 
+		                   row=FALSE, col=FALSE, qu=FALSE)
 		extract_param <- paste0(" --extract ", searchspacename)
 	} else {
 		extract_param <- " " 
