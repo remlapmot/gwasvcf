@@ -32,14 +32,14 @@ Imports:
     S4Vectors,
     stringr,
     SummarizedExperiment,
-    testthat,
     tidyr,
     utils,
     VariantAnnotation
 Suggests: 
     knitr,
     markdown,
-    rmarkdown
+    rmarkdown,
+    testthat,
 VignetteBuilder: 
     knitr
 Remotes:
