@@ -51,7 +51,6 @@ Remotes:
   bioc::3.12/VariantAnnotation
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: false
 RoxygenNote: 7.1.1
 Suggests: 
     knitr,
