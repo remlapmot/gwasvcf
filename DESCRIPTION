@@ -16,7 +16,6 @@ Depends:
 Imports:
     BiocGenerics,
     Biostrings,
-    coloc,
     data.table,
     dplyr,
     genetics.binaRies,
