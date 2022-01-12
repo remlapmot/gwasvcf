@@ -22,7 +22,6 @@ Imports:
     GenomeInfoDb,
     GenomicRanges,
     IRanges,
-    jsonlite,
     magrittr,
     Rhtslib,
     rlang,
