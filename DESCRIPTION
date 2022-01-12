@@ -51,7 +51,7 @@ Remotes:
   bioc::3.12/VariantAnnotation
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     knitr,
     rmarkdown,
