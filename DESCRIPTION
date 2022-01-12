@@ -23,7 +23,6 @@ Imports:
     GenomicRanges,
     IRanges,
     magrittr,
-    Rhtslib,
     rlang,
     Rsamtools,
     RSQLite,
