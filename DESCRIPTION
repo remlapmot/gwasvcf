@@ -25,7 +25,6 @@ Imports:
     IRanges,
     jsonlite,
     magrittr,
-    methods,
     Rhtslib,
     rlang,
     Rsamtools,
