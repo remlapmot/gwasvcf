@@ -34,7 +34,7 @@ Imports:
 Suggests: 
     knitr,
     rmarkdown,
-    testthat,
+    testthat
 VignetteBuilder: 
     knitr
 Remotes:
