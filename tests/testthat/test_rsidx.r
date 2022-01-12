@@ -41,7 +41,8 @@ test_that("tag db", {
 	expect_true(file.exists(dbfile))
 })
 
-test_that("sqlite_ld_proxies", {
+test_that("sqlite_ld_proxies", { # TODO: check this test
+  skip("TODO: Needs an expect_* condition")
 	m <- data.table::fread(paste0(fn, ".bim")) %>% {sample(.$V2, 100, replace=FALSE)}
 	ld <- sqlite_ld_proxies(m, dbfile, 0.2)
 })
