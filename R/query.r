@@ -391,7 +391,7 @@ query_chrompos_bcftools <- function(chrompos, vcffile, id=NULL)
 	chrompos <- parse_chrompos(chrompos)
 	chrompos %>% as.data.frame
 	tmp <- tempfile()
-	utils::write.table(as.data.frame(chrompos)[,1:3], 
+	utils::write.table(as.data.frame(chrompos)[,seq_len(3)], 
 	                   file=paste0(tmp, ".snplist"), sep="\t", 
 	                   row=FALSE, col=FALSE, qu=FALSE)
 
