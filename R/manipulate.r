@@ -210,7 +210,7 @@ vcflist_overlaps <- function(vcflist, chrompos)
 			query_gwas(x, chrompos)
 		})
 	} else {
-		vcflist <- lapply(1:length(vcflist), function(i)
+		vcflist <- lapply(seq_len(length(vcflist)), function(i)
 		{
 			x <- vcflist[[i]]
 			if(class(x) %in% c("CollapsedVCF", "ExpandedVCF"))
