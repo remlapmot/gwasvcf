@@ -4,7 +4,7 @@
 #' @param indexname index file name to create. Deletes existing file if exists.
 #'
 #' @export
-#' @return NULL
+#' @return RSID index file
 create_rsidx_index_from_vcf <- function(vcf, indexname)
 {
 	fn <- tempfile()
