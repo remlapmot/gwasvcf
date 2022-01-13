@@ -95,7 +95,7 @@ merge_vcf <- function(a, b)
 	switch <- VariantAnnotation::ref(a) == VariantAnnotation::alt(b) & VariantAnnotation::ref(b) == VariantAnnotation::alt(a)
 	if(any(switch))
 	{
-		for(i in 1:ncol(VariantAnnotation::geno(b)[["ES"]]))
+		for(i in seq_len(ncol(VariantAnnotation::geno(b)[["ES"]])))
 		{
 			VariantAnnotation::geno(b)[["ES"]][,i][switch] <- lapply(VariantAnnotation::geno(b)[["ES"]][,i][switch], function(x) x * -1)
 		}
