@@ -11,6 +11,9 @@ create_rsidx_index_from_vcf(vcf, indexname)
 
 \item{indexname}{index file name to create. Deletes existing file if exists.}
 }
+\value{
+RSID index file
+}
 \description{
 Create RSID index from VCF
 }

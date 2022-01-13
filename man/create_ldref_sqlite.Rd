@@ -13,6 +13,9 @@ create_ldref_sqlite(bfile, dbname, tag_r2 = 0.6)
 
 \item{tag_r2}{minimum tag r2}
 }
+\value{
+Creates LD reference sqlite database
+}
 \description{
 This is used for looking up proxies
 }
