@@ -57,7 +57,7 @@ create_rsidx_sub_index <- function(rsid, rsidx, newindex)
 #' @param tag_r2 minimum tag r2
 #'
 #' @export
-#' @return NULL
+#' @return Creates LD reference sqlite database
 create_ldref_sqlite <- function(bfile, dbname, tag_r2=0.6)
 {
 	stopifnot(check_plink())
