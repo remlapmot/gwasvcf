@@ -14,8 +14,8 @@ gwasvcf_to_summaryset <- function(vcf){
 	# get summary data and create SummarySet
 
     s <- vcf %>% 
-		vcf_to_tibble(.) %>% 
-		gwasglue2::create_summaryset_from_gwasvcf(., metadata = md)
+		vcf_to_tibble() %>% 
+		gwasglue2::create_summaryset_from_gwasvcf(metadata = md)
 
     return(s)
 }
