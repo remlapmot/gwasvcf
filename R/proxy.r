@@ -263,14 +263,14 @@ proxy_match <- function(vcf, rsid, bfile=NULL, proxies="yes", tag_kb=5000, tag_n
 		S4Vectors::DataFrame(row.names="PR", Number="1", Type="String", Description="Proxy rsid")
 	)
 	VariantAnnotation::geno(prox)[["ES"]][!sign_index] <- {unlist(VariantAnnotation::geno(prox)[["ES"]][!sign_index]) * -1} %>% as.list
-	VariantAnnotation::geno(prox)[["PR"]] <- matrix(ld[["SNP_B"]], length(ld[["SNP_B"]]), 1)
+	VariantAnnotation::geno(prox)[["PR"]] <- matrix(ld[["SNP_B"]], length(ld[["SNP_B"]]), ncol(prox), dimnames = list(NULL, colnames(prox)))
 
 	if(proxies == "only")
 	{
 		return(prox)
 	} else {
 		VariantAnnotation::geno(VariantAnnotation::header(o)) <- rbind(VariantAnnotation::geno(VariantAnnotation::header(o)), S4Vectors::DataFrame(row.names="PR", Number="1", Type="String", Description="Proxy rsid"))
-		VariantAnnotation::geno(o)[["PR"]] <- matrix(rep(NA, length(o)), length(o), 1)
+		VariantAnnotation::geno(o)[["PR"]] <- matrix(rep(NA, length(o)), length(o), ncol(prox))
 		return(BiocGenerics::rbind(o, prox))
 	}
 }
