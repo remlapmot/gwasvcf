@@ -1,3 +1,7 @@
+# gwasvcf 0.1.5
+
+* `proxy_match()` is now robust to VCFs with multiple samples (thanks @jwr-git)
+
 # gwasvcf 0.1.4
 
 * Add sqlite3 to DESCRIPTION SystemRequirements for `create_pval_index_from_vcf()`
