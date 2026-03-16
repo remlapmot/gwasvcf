@@ -247,23 +247,98 @@ proxy_match <- function(vcf, rsid, bfile=NULL, proxies="yes", tag_kb=5000, tag_n
 		QUAL=as.numeric(NA), 
 		FILTER="PASS"
 	)
-	prox <- VariantAnnotation::VCF(
-		rowRanges = gr,
-		colData = SummarizedExperiment::colData(e),
-		fixed = fixeddat,
-		info = VariantAnnotation::info(e),
-		exptData = list(
-			header = VariantAnnotation::header(e)
-		),
-		geno = S4Vectors::SimpleList(
-			lapply(VariantAnnotation::geno(e), `dimnames<-`, NULL)
+
+	# Try original implementation first to preserve existing behavior.
+	# Fall back only when VariantAnnotation's S4 geno replacement fails
+	# (e.g. small/single-sample VCF objects with subscript/dimension issues).
+	prox <- tryCatch({
+		prox0 <- VariantAnnotation::VCF(
+			rowRanges = gr,
+			colData = SummarizedExperiment::colData(e),
+			fixed = fixeddat,
+			info = VariantAnnotation::info(e),
+			exptData = list(
+				header = VariantAnnotation::header(e)
+			),
+			geno = S4Vectors::SimpleList(
+				lapply(VariantAnnotation::geno(e), `dimnames<-`, NULL)
+			)
 		)
-	)
-	VariantAnnotation::geno(VariantAnnotation::header(prox)) <- rbind(VariantAnnotation::geno(VariantAnnotation::header(prox)), 
-		S4Vectors::DataFrame(row.names="PR", Number="1", Type="String", Description="Proxy rsid")
-	)
-	VariantAnnotation::geno(prox)[["ES"]][!sign_index] <- {unlist(VariantAnnotation::geno(prox)[["ES"]][!sign_index]) * -1} %>% as.list
-	VariantAnnotation::geno(prox)[["PR"]] <- matrix(ld[["SNP_B"]], length(ld[["SNP_B"]]), ncol(prox), dimnames = list(NULL, colnames(prox)))
+
+		VariantAnnotation::geno(VariantAnnotation::header(prox0)) <- rbind(
+			VariantAnnotation::geno(VariantAnnotation::header(prox0)),
+			S4Vectors::DataFrame(
+				row.names = "PR",
+				Number = "1",
+				Type = "String",
+				Description = "Proxy rsid"
+			)
+		)
+
+		VariantAnnotation::geno(prox0)[["ES"]][!sign_index] <- {
+			unlist(VariantAnnotation::geno(prox0)[["ES"]][!sign_index]) * -1
+		} %>% as.list
+
+		VariantAnnotation::geno(prox0)[["PR"]] <- matrix(
+			ld[["SNP_B"]],
+			nrow = length(ld[["SNP_B"]]),
+			ncol = ncol(prox0),
+			dimnames = list(NULL, colnames(prox0))
+		)
+
+		prox0
+	}, error = function(err) {
+		message(
+			"Original proxy VCF construction failed; using compatibility fallback. Error: ",
+			conditionMessage(err)
+		)
+
+		# Fallback for problematic small / single-sample objects:
+		# build geno as plain matrices first, then construct the VCF once.
+		geno_list <- lapply(VariantAnnotation::geno(e), function(x) {
+			if (is.list(x) && !is.matrix(x)) {
+				x <- matrix(unlist(x), ncol = max(1L, ncol(e)))
+			} else if (!is.matrix(x)) {
+				x <- matrix(x, ncol = max(1L, ncol(e)))
+			}
+			dimnames(x) <- NULL
+			x
+		})
+
+		if ("ES" %in% names(geno_list) && any(!sign_index)) {
+			geno_list[["ES"]][!sign_index, ] <-
+				geno_list[["ES"]][!sign_index, , drop = FALSE] * -1
+		}
+
+		geno_list[["PR"]] <- matrix(
+			ld[["SNP_B"]],
+			nrow = nrow(ld),
+			ncol = max(1L, ncol(e))
+		)
+
+		prox1 <- VariantAnnotation::VCF(
+			rowRanges = gr,
+			colData = SummarizedExperiment::colData(e),
+			fixed = fixeddat,
+			info = VariantAnnotation::info(e),
+			exptData = list(
+				header = VariantAnnotation::header(e)
+			),
+			geno = S4Vectors::SimpleList(geno_list)
+		)
+
+		VariantAnnotation::geno(VariantAnnotation::header(prox1)) <- rbind(
+			VariantAnnotation::geno(VariantAnnotation::header(prox1)),
+			S4Vectors::DataFrame(
+				row.names = "PR",
+				Number = "1",
+				Type = "String",
+				Description = "Proxy rsid"
+			)
+		)
+
+		prox1
+	})
 
 	if(proxies == "only")
 	{
