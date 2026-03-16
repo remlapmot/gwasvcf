@@ -306,7 +306,7 @@ proxy_match <- function(vcf, rsid, bfile=NULL, proxies="yes", tag_kb=5000, tag_n
 		})
 
 		if ("ES" %in% names(geno_list) && any(!sign_index)) {
-			geno_list[["ES"]][!sign_index, ] <-
+			geno_list[["ES"]][!sign_index, , drop = FALSE] <-
 				geno_list[["ES"]][!sign_index, , drop = FALSE] * -1
 		}
 
