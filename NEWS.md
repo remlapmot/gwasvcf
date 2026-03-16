@@ -1,3 +1,20 @@
+# gwasvcf 0.1.6
+
+* Updates to the proxy VCF construction section inside `proxy_match()`.
+
+The new behavior is:
+
+1. Attempt the original implementation exactly as before.
+2. If that succeeds, return the result unchanged.
+3. If that fails, catch the error and rebuild the proxy VCF using a compatibility path that:
+
+   * extracts genotype fields as plain matrices first
+   * applies effect-sign flipping before VCF construction
+   * inserts the PR matrix before VCF construction
+   * then creates the VCF object once, instead of relying on post-hoc geno slot replacement
+
+This means existing successful cases continue using the original code path, and only problematic cases use the fallback (thanks @ywge03)
+
 # gwasvcf 0.1.5
 
 * `proxy_match()` is now robust to VCFs with multiple samples (thanks @jwr-git)
