@@ -313,7 +313,8 @@ proxy_match <- function(vcf, rsid, bfile=NULL, proxies="yes", tag_kb=5000, tag_n
 		geno_list[["PR"]] <- matrix(
 			ld[["SNP_B"]],
 			nrow = nrow(ld),
-			ncol = max(1L, ncol(e))
+			ncol = max(1L, ncol(e)),
+			dimnames = list(NULL, colnames(e))
 		)
 
 		prox1 <- VariantAnnotation::VCF(
